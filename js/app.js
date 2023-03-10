@@ -26,19 +26,21 @@ const showProducts = (products) => {
     //  console.log('image :>> ', image);
     const div = document.createElement('div');
     div.classList.add('product', 'col');
-    div.innerHTML = `<div class="single-product">
-      <div>
-    <img class="product-image" src=${image}></img>
-      </div>
-      <h3>${title}</h3>
-      <p>Category: ${category}</p>
-      <h2>Price: $ ${price}</h2>
+    div.innerHTML = `
 
-      <button onclick="showProductDetails(${id})" id="details-btn"    data-bs-toggle="modal"
-      data-bs-target="#exampleModal" class="btn btn-outline-secondary mb-2 rounded-1 mt-1">Details</button>
-      
-      <button onclick="addToCart('${id}','${price}')" id="addToCart-btn" class="buy-now btn btn-success border-0 w-100 rounded-0 bg-main py-2">Add to cart</button>
-      `;
+    <div class="card " >
+    <div class="card-body">
+    <img src=${image} class="img-fluid " >
+       <h5 class="card-title">${title}</h5>
+       <p>Category: ${category}</p>
+       <h2>Price: $ ${price}</h2>
+          <button onclick="showProductDetails('${id}')" id="details-btn"    data-bs-toggle="modal"
+          data-bs-target="#exampleModal" class="btn btn-outline-secondary mb-2 rounded-1 mt-1">Details</button>
+            <button onclick="addToCart('${id}','${price}')" id="addToCart-btn" class=" btn btn-success">Add to cart</button>
+    </div>
+ </div>
+    `;
+
     document.getElementById('all-products').appendChild(div);
   }
 };
@@ -51,6 +53,7 @@ const addToCart = (id, price) => {
 };
 // modal
 const showProductDetails = (product_id) => {
+   // console.log(product_id);
   console.log(product_id);
   fetch(`${url}/${product_id}`)
     .then((res) => res.json())
@@ -90,7 +93,7 @@ const updateTaxAndCharge = (total_product_price) => {
 
 // set innerText function
 const setInnerText = (id, value) => {
-  document.getElementById(id).innerText = value.toFixed(2);
+  document.getElementById(id).innerText = value;
 };
 //grandTotal update function
 const getUpdatePrice = () => {
@@ -101,14 +104,14 @@ const getUpdatePrice = () => {
   const total_tax = parseFloat(document.getElementById('total-tax').innerText);
   const net_total = price + delivery_charge + total_tax;
   document.getElementById('total').innerText = net_total.toFixed(2);
-//   console.log('net_total :>> ', net_total);
+  //   console.log('net_total :>> ', net_total);
 };
 
 // search by category
 const searchByCategory = (data) => {
   document.getElementById('search-btn').addEventListener('click', function () {
     const inputField = document.getElementById('input-value').value;
-   //  console.log(inputField);
+    //  console.log(inputField);
     //  const searchedProduct = data.map((p) => p.category).filter( prd => prd.startsWith(`${inputField}`));
     const searchedProduct = data.filter((prd) =>
       prd.category.startsWith(`${inputField}`)
@@ -118,4 +121,3 @@ const searchByCategory = (data) => {
     showProducts(searchedProduct);
   });
 };
-
