@@ -53,8 +53,8 @@ const addToCart = (id, price) => {
 };
 // modal
 const showProductDetails = (product_id) => {
-   // console.log(product_id);
-  console.log(product_id);
+  // console.log(product_id);
+  // console.log(product_id);
   fetch(`${url}/${product_id}`)
     .then((res) => res.json())
     .then((data) => showProductDetailsInModal(data));
@@ -64,6 +64,7 @@ const showProductDetailsInModal = (product_details) => {
   setInnerText('exampleModalLabel', product_details.title);
   setInnerText('product_id', product_details.id);
   setInnerText('modal_body', product_details.description);
+  // console.log();
   setInnerText('rating', product_details.rating.rate);
 };
 // product price calculate
@@ -79,21 +80,24 @@ const getPrice = (id, price) => {
 const updateTaxAndCharge = (total_product_price) => {
   if (total_product_price > 200) {
     setInnerText('delivery-charge', 30);
-    setInnerText('total-tax', total_product_price * 0.2);
+    setInnerText('total-tax', (total_product_price * 0.2).toFixed(2));
   }
   if (total_product_price > 400) {
     setInnerText('delivery-charge', 50);
-    setInnerText('total-tax', total_product_price * 0.3);
+    setInnerText('total-tax', (total_product_price * 0.3).toFixed(2));
   }
   if (total_product_price > 500) {
     setInnerText('delivery-charge', 60);
-    setInnerText('total-tax', total_product_price * 0.4);
+    // const tax = (total_product_price * 0.4).toFixed(2);
+    // console.log('tax :>> ', tax);
+    setInnerText('total-tax', (total_product_price * 0.4).toFixed(2));
   }
 };
 
 // set innerText function
-const setInnerText = (id, value) => {
-  document.getElementById(id).innerText = value;
+const setInnerText = (id, charge) => {
+
+  document.getElementById(id).innerText = charge;
 };
 //grandTotal update function
 const getUpdatePrice = () => {
