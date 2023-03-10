@@ -1,22 +1,24 @@
-const arr = [];
+// const arr = [];
 const url = 'https://fakestoreapi.com/products';
 const loadProducts = (url) => {
   fetch(url)
     .then((res) => res.json())
     .then((data) => {
-      arr.push(data);
+      // arr.push(data);
       showProducts(data);
+      searchByCategory(data);
     });
 };
 loadProducts(url);
 // show all product in UI
 const showProducts = (products) => {
+  // console.log('products :>> ', products);
   //   console.log('products :>> ', products);
-    setInnerText('total_products', products.length);
+  setInnerText('total_products', products.length);
 
   document.getElementById('all-products').innerHTML = '';
 
-  const allProducts = products.slice(0, 5).map((pd) => pd);
+  const allProducts = products.slice(0, 19).map((pd) => pd);
   for (const product of allProducts) {
     //  console.log('product :>> ', product.image);
     const { image, title, category, price, id } = product;
@@ -42,29 +44,25 @@ const showProducts = (products) => {
 };
 
 let count = 0;
-
 const addToCart = (id, price) => {
   count = count + 1;
   getPrice(id, price);
-
-  //   updateTaxAndCharge();
   document.getElementById('total-Products').innerText = count;
 };
-// // modal
-// const showProductDetails = (product_id) => {
-//   console.log(product_id);
-//   fetch(`https://fakestoreapi.com/products/${product_id}`)
-//     .then((res) => res.json())
-//     .then((data) => showProductDetailsInModal(data));
-// };
+// modal
+const showProductDetails = (product_id) => {
+  console.log(product_id);
+  fetch(`${url}/${product_id}`)
+    .then((res) => res.json())
+    .then((data) => showProductDetailsInModal(data));
+};
 
-// const showProductDetailsInModal = (product_details) => {
-//   console.log(product_details);
-//   setInnerText('exampleModalLabel', product_details.title);
-//   setInnerText('product_id', product_details.id);
-//   setInnerText('modal_body', product_details.description);
-//   setInnerText('rating', product_details.rating.rate);
-// };
+const showProductDetailsInModal = (product_details) => {
+  setInnerText('exampleModalLabel', product_details.title);
+  setInnerText('product_id', product_details.id);
+  setInnerText('modal_body', product_details.description);
+  setInnerText('rating', product_details.rating.rate);
+};
 // product price calculate
 const getPrice = (id, price) => {
   const old_price = parseFloat(document.getElementById('price').innerText);
@@ -107,6 +105,20 @@ const getUpdatePrice = () => {
   console.log('net_total :>> ', net_total);
 };
 
+// search by category
+const searchByCategory = (data) => {
+  document.getElementById('search-btn').addEventListener('click', function () {
+    const inputField = document.getElementById('input-value').value;
+    console.log(inputField);
+    //  const searchedProduct = data.map((p) => p.category).filter( prd => prd.startsWith(`${inputField}`));
+    const searchedProduct = data.filter((prd) =>
+      prd.category.startsWith(`${inputField}`)
+    );
+
+    showProducts(searchedProduct);
+  });
+};
+
 // // main price update function
 // const updatePrice = (id, value) => {
 //   //   console.log('id,value :>> ', id, value);
@@ -119,17 +131,3 @@ const getUpdatePrice = () => {
 //   //   document.getElementById(id).innerText = Math.round(total);
 //   document.getElementById('price').innerText = convertedOldPrice;
 // };
-
-// // set innerText function
-// const setInnerText = (id, value) => {
-//   document.getElementById(id).innerText = Math.round(value);
-// };
-
-// // search by category
-// document.getElementById('search-btn').addEventListener('click', function () {
-//   const inputField = document.getElementById('input-value').value;
-//   const searchedProduct = arr[0].find((p) =>
-//     p.category.startsWith(`${inputField}`)
-//   );
-//   showProducts(searchedProduct);
-// });
