@@ -67,10 +67,9 @@ const showProductDetailsInModal = (product_details) => {
 const getPrice = (id, price) => {
   const old_price = parseFloat(document.getElementById('price').innerText);
   const totalProductPrice = old_price + parseFloat(price);
-  console.log('old_price :>> ', old_price);
-  console.log('totalProductPrice :>> ', totalProductPrice);
+
   updateTaxAndCharge(totalProductPrice);
-  document.getElementById('price').innerText = totalProductPrice;
+  document.getElementById('price').innerText = totalProductPrice.toFixed(2);
   getUpdatePrice();
 };
 // update delivery charge and total Tax
@@ -91,7 +90,7 @@ const updateTaxAndCharge = (total_product_price) => {
 
 // set innerText function
 const setInnerText = (id, value) => {
-  document.getElementById(id).innerText = value;
+  document.getElementById(id).innerText = value.toFixed(2);
 };
 //grandTotal update function
 const getUpdatePrice = () => {
@@ -101,33 +100,22 @@ const getUpdatePrice = () => {
   );
   const total_tax = parseFloat(document.getElementById('total-tax').innerText);
   const net_total = price + delivery_charge + total_tax;
-  document.getElementById('total').innerText = net_total;
-  console.log('net_total :>> ', net_total);
+  document.getElementById('total').innerText = net_total.toFixed(2);
+//   console.log('net_total :>> ', net_total);
 };
 
 // search by category
 const searchByCategory = (data) => {
   document.getElementById('search-btn').addEventListener('click', function () {
     const inputField = document.getElementById('input-value').value;
-    console.log(inputField);
+   //  console.log(inputField);
     //  const searchedProduct = data.map((p) => p.category).filter( prd => prd.startsWith(`${inputField}`));
     const searchedProduct = data.filter((prd) =>
       prd.category.startsWith(`${inputField}`)
     );
+    // startsWith(`${inputField}`)
 
     showProducts(searchedProduct);
   });
 };
 
-// // main price update function
-// const updatePrice = (id, value) => {
-//   //   console.log('id,value :>> ', id, value);
-//   const convertedOldPrice = getPrice(id, value);
-//   console.log('convertedOldPrice :>> ', convertedOldPrice);
-//   //   const convertPrice = parseInt(value);
-//   //   console.log('convertPrice :>> ', convertPrice);
-//   //   const total = convertedOldPrice + convertPrice;
-//   //   console.log('total :>> ', total);
-//   //   document.getElementById(id).innerText = Math.round(total);
-//   document.getElementById('price').innerText = convertedOldPrice;
-// };
